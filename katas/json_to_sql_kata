@@ -1,0 +1,11 @@
+SELECT 
+  data ->> 'first_name' as first_name,
+  data ->> 'last_name' as last_name,
+  date_part ('year',age((data->>'date_of_birth')::timestamp))::int as age,
+  extract(year from age((data ->> 'date_of_birth')::date))::int as age,
+  case 
+    when data->>'private'='true' then 'Hidden'
+    else coalesce((data#>>'{email_addresses,0}'),'None')
+  end as email_address
+from users
+order by first_name,last_name
