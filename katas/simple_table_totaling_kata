@@ -1,0 +1,14 @@
+select rank() over (order by sum(points) desc) as rank,
+coalesce(nullif(clan, ''), '[no clan specified]') as clan,
+sum(points) as total_points,
+count(name) as total_people
+from people
+group by clan
+
+---
+'La función "NULLIF" compara el valor de la columna "clan" con una cadena vacía (''), y si son iguales, devuelve NULL. 
+De lo contrario, devuelve el valor original de la columna "clan".
+La función "COALESCE" toma varios argumentos y devuelve el primer argumento que no sea nulo. 
+En este caso, el primer argumento es el resultado de la función "NULLIF", y si ese resultado es nulo, la función "COALESCE" devuelve la cadena '[no clan specified]'.
+Esta línea de código está transformando el valor de la columna "clan" de la siguiente manera: si la columna "clan" está vacía o contiene solo espacios en blanco, 
+se reemplaza con la cadena '[no clan specified]', de lo contrario, se mantiene el valor original de la columna "clan".
